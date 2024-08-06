@@ -1,79 +1,127 @@
+<!-- har page pr layout function ke andar bolierplate.ejs file ka path pass krenge(but - nhi likhte) -->
+<!-- layout function ke neeche jo bhi likhenge wo body m pass ho jayega -->
 <% layout('layouts/boilerplate') %>
-    <%- include('../partials/navbar')%>
 
+<!-- new page pr form create kiya hai so we will add client side validation -->
+<div class="row">
+  <div class="col-6 mx-auto">
+    <form action="/products" method="POST" class="needs-validation" novalidate enctype="multipart/form-data">
+      <!-- novalidate y attribute default validation ko rok dega means required attribute ki exixtence ko khatam kr dega -->
+      <!-- csv m y steps follow krenge=> input m required attribute ka use krenge toh form ko novalidate attribute denge and form ko class denge needs-validation and last m div ke baad script tag ke andar javascript ka code likhenge from bootstrap validation....this is client side validation-->
+      <div class="mb-3">
+        <label for="name" class="form-label">Name: </label>
+        <input type="text" class="form-control" name="name" id="name" placeholder="Name of Product" required>
+        <!-- looks good validator -->
+        <div class="valid-feedback">
+          Looks good!
+        </div>
+        <!-- error validator -->
+        <div class="invalid-feedback">
+          Please choose a product name.
+        </div>
+        <!-- name attribute m vahi likhte hai jo humne schema m likha hai -->
+      </div>
 
-<div class="row margin-form">
-    <div class="col-6 mx-auto">
-        <form action="/products" method="POST" class="needs-validation" novalidate><!-- form ko jab submit krnge tb POST request hit hogi and products crete krnge-->
-            <div class="mb-3">
-                <label for="naam" class="form-label">Name: </label>
-                <input type="text" class="form-control" name="name" id="naam" placeholder="Name of Product" required>
-                <div class="valid-feedback">
-                    Looks good!
-                  </div>
-                  <div class="invalid-feedback">
-                    Please enter the name field.
-                  </div>
-            </div>
-            <div class="mb-3">
-                <label for="imge" class="form-label">Image Url: </label>
-                <input type="text" class="form-control" name="img" id="imge" placeholder="Image URL of Product" required>
-                <div class="valid-feedback">
-                    Looks good!
-                  </div>
-                  <div class="invalid-feedback">
-                    Please gives correct image address.
-                  </div>
-            </div>
-            <div class="mb-3">
-                <label for="paisa" class="form-label">Price: </label>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">Rs. </span>
-                    <input class="form-control" type="number" name="price" id="paisa" placeholder="Price of Product" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                      </div>
-                      <div class="invalid-feedback">
-                        Please enter the price field.
-                      </div>
-                </div>
-            </div>
-        
-            <div class="mb-3">
-                <label for="des" class="form-label">Description: </label>
-                <textarea class="form-control"  name="desc" id="des" rows="5" placeholder="Description of Product" required></textarea>
-                <div class="valid-feedback">
-                    Looks good!
-                  </div>
-                  <div class="invalid-feedback">
-                    Please enter the description field.
-                  </div>
-            </div>
-            <button type="submit" class="btn btn-sm btn-success">Add</button>
-        </form>
-    </div>
+      <div class="mb-3">
+        <label for="image" class="form-label">Image Url: </label>
+        <input type="file" class="form-control" name="image" id="image" placeholder="Choose image" required>
+        <div id="uploadedImageContainer" class="mt-3">
+          <!-- Uploaded image will be displayed here -->
+         
+        </div>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
+        <div class="invalid-feedback">
+          Please choose an image URL.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="paisa" class="form-label">Price: </label>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Rs. </span>
+          <input class="form-control" type="number" name="price" id="paisa" step="any" placeholder="Price of Product" required>
+          <!-- looks good validator -->
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+          <!-- error validator -->
+          <div class="invalid-feedback">
+            Please choose a price.
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="desc" class="form-label">Description: </label>
+        <textarea class="form-control" name="desc" id="des" rows="5" placeholder="Description of Product" required></textarea>
+        <!-- looks good validator -->
+        <div class="valid-feedback">
+          Looks good!
+        </div>
+        <!-- error validator -->
+        <div class="invalid-feedback">
+          Please choose a description.
+        </div>
+      </div>
+      <button type="submit" class="btn btn-sm btn-success">Add Product</button>
+      <!-- add product button pr click krte hi post request jayegi /products pr jo humne form define kiya hai in action attribute-->
+    </form>
+  </div>
 </div>
+
+
+
+
 <script>
-    //these fuction are called IIFE immediately invoked functional expression
-    // Example starter JavaScript for disabling form submissions if there are invalid fields
-(() => {
-  'use strict'
-
-  // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  const forms = document.querySelectorAll('.needs-validation')
-
-  // Loop over them and prevent submission
-  Array.from(forms).forEach(form => {
-    form.addEventListener('submit', event => {
-      if (!form.checkValidity()) {
-        event.preventDefault()
-        event.stopPropagation()
-      }
-
-      form.classList.add('was-validated')
-    }, false)
-  })
-})()
+  // Bootstrap validation script
+  (function () {
+    'use strict'
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.querySelectorAll('.needs-validation')
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms)
+      .forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+          form.classList.add('was-validated')
+        }, false)
+      })
+  })()
 </script>
 
+<!-- <script>
+  document.querySelector('form').addEventListener('submit', async function (event) {
+    event.preventDefault();
+    const formData = new FormData(this);
+    const response = await fetch(this.action, {
+      method: this.method,
+      body: formData
+    });
+    const result = await response.json();
+    console.log(result); // Check what the server returns
 
+    if (result.image) {
+      const imageContainer = document.getElementById('uploadedImageContainer');
+      imageContainer.innerHTML = <img src="${result.image}" alt="Uploaded Image" class="img-fluid" />;
+    } else if (result.msg) {
+      alert(result.msg); // Show any messages returned from the server
+    }
+  });
+</script> -->
+
+
+
+<!-- jab bhi koi new file banayenge like new.ejs, show.ejs...toh usme  index.ejs file ka complete code copy paste kr denge then jo code change krna hai use change kr denge -->
+<!-- server side valiadtion backend m hota hai ..hum frontend m toh ja sakte hai but backend m nhi ja sakte so we will use joi package for ssv-->
+<!-- for server side validation we need joi and for server side validation we will make new schema according to the joi -->
+<!-- documentation...joi.dev(joi is a schema descriptive language means y schema ki help se kaam krta hai and it is very powerful...it is a npm package) -->
+<!-- joi hamare data ko validate krta hai(y data validator ka kaam krta h)-->
+<!--joi is a npm package so we'll to install the joi and then require-->
+<!-- there are 2 steps for ssv=> 1.joi ke liye alag se schema banate hai and uss schema ke sath kaam krte hai -->
+<!-- 2. jahan pr bhi  schema ko rakhenge ise validate kreneg-->
+<!-- means pehle schema ko define krenge in schema.js file and export krenge then schema ko  validate krenge  in middleware.js file and export krenge and routes folfer ke andar productRoutes and reviewRoutes m middleware(validateProduct and validatereview ) ko require krenge and then router m use krenge for server side vlaidation-->
+<!-- product ka schema alag hai and joi ka schema alag hai -->

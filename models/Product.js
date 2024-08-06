@@ -10,12 +10,17 @@ const productSchema = new mongoose.Schema({
         trim:true,
         required:true
     },
-    img:{
-        type:String,
-        trim:true,
-       // default:'https://images.unsplash.com/photo-1621768216002-5ac171876625?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YXBwbGUlMjBsb2dvfGVufDB8fDB8fHww',
-
-    },
+    image:{
+        secure_url:{
+            type:String,
+            trim:true
+        },
+        public_id:{
+            type:String,
+            required:true
+        }
+       
+    } ,
     price:{
         type:Number,
         min:0,

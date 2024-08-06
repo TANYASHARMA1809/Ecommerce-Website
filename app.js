@@ -1,4 +1,7 @@
 
+if(process.env.NODE_ENV !== 'production'){
+    require('dotenv').config({path:__dirname+"/.env"});
+}
 const express=require('express');
 const app=express();//express ko require kia
 const path=require('path');
@@ -18,8 +21,8 @@ const authRoutes=require('./routes/auth');
 const cartRoutes=require('./routes/cart');
 
 
-
-mongoose.connect('mongodb://127.0.0.1:27017/shopping-tanya-app')//yeh connect promise return krta hai
+const db_url=process.env.db_url
+mongoose.connect(db_url)//yeh connect promise return krta hai
 .then(()=>{
     console.log("DB connected successfully")
 })
