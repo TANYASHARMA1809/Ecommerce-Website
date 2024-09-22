@@ -1,38 +1,44 @@
-
-
-<nav class="navbar navbar-expand-lg bg-body-light">
-  <div class="container-fluid">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-      <a class="navbar-brand" href="/products">Shopping App</a>
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/products">Home</a>
-        </li>
-        
-        <% if(currentUser && currentUser.role ==='seller'){ %>
+<nav class="navbar fixed-top navbar-expand-lg text-dark" style="background-color: #0077b6;">
+  <!-- nav tag ke andar class m fixed-top likhne se navbar top pr fixed ho jayega -->
+    <div class="container">
+      <a class="navbar-brand text-dark" href="/products">Shopping App</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarScroll">
+        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px">
           <li class="nav-item">
-            <a class="nav-link" href="/product/new">New</a>
+            <a class="nav-link text-dark" aria-current="page" href="/products">Home</a>
           </li>
-        <%}%>
-       
-      </ul>
-      <div class="d-flex" role="search">
-        <% if(!currentUser){ %>
-          <a href="/login" class="nav-link mx-2">Login</a>
-        <% } else { %>
-        <a href="#" class="nav-link">Hello,<%= currentUser.username %> </a>
-        <a href="/user/cart" class="nav-link mx-2">
-          <i class="fa-solid fa-cart-shopping"></i>
-          <sup><span class="badge bg-danger"><%=currentUser.cart.length %></span></sup>
+          <% if(currentUser && currentUser.role === 'seller'){ %>
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="/product/new">New</a>
+            </li>
+          <%} %>
 
-        </a>
-        <a href="/logout" class="nav-link mx-2">Logout</a>
-        <% } %>
-        
+          <!-- <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Link
+            </a>
+          </li> -->
+
+        </ul>
+        <div class="d-flex" role="search">
+          <% if(!currentUser){ %>
+            <a class="text-dark nav-link " href="/login">Login</a>
+            <% } else {%>
+              <a href="#" class="nav-link text-dark">Hello, <%=currentUser.username%> </a>
+            <a href="/user/cart" class="nav-link">
+              <i class="fa-solid fa-cart-shopping text-dark"></i>
+              <sup> <span class="badge bg-danger"> <%=currentUser.cart.length%></span> </sup>
+            </a>
+            <a href="/logout" class="nav-link text-dark ">Logout</a>
+          <% } %>
+          <!-- login krne ke baad navbar pr only logout show hoga -->
+           <!-- logout krne ke baad navbar pr only login show hoga -->
+        </div>
       </div>
     </div>
-  </div>
 </nav>
+
+<!-- navbar ke andar jo humne home new edit login signup likha hai y sabhi routes hai.....isse again and again localhost:8080 nhi likhna padega  -->

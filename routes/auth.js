@@ -2,6 +2,7 @@ const express=require('express');
 const router=express.Router();
 const User=require('../models/User');
 const passport=require('passport');
+const {validateUser}=require('../middleware');
 
 
 //to show the form of signup
@@ -14,6 +15,7 @@ router.get('/register',(req,res)=>{
 router.post('/register',async(req,res)=>{
     try{
         let {email,password,username,role}=req.body;
+
         const user=new User({email,username,role}); //password ko agrument mai use ni krnge,kuki password hash hokr jayga
         const newUser=await User.register(user,password);//password ko alg se lnge
         // res.redirect('/login');
@@ -29,7 +31,7 @@ router.post('/register',async(req,res)=>{
     }
     catch(e){
         req.flash('error',e.message);
-        return res.redirect('/signup');
+        return res.redirect('/register');
     }
    
 })

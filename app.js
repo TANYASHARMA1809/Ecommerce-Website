@@ -19,6 +19,8 @@ const productRoutes =require('./routes/product');
 const reviewRoutes=require('./routes/review');
 const authRoutes=require('./routes/auth');
 const cartRoutes=require('./routes/cart');
+const orderRoutes =require('./routes/order');
+const productApi =require('./routes/api/productapi')
 
 
 const db_url=process.env.db_url
@@ -55,10 +57,13 @@ app.use(session(configSession));
 //flash middleware use kre h
 app.use(flash());
 
+
 app.use(passport.initialize());
 app.use(passport.session());//taki locally store krpao
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+//Passport
+passport.use(new LocalStrategy(User.authenticate()));
 
 //storing things inside locals object
 app.use((req,res,next)=>{
@@ -68,9 +73,10 @@ app.use((req,res,next)=>{
     next();//sara kam shi chlra hoga toh agle middleware pr chle jana
 })
 
-//Passport
-passport.use(new LocalStrategy(User.authenticate()));
 
+app.get('/',(req,res)=>{
+    res.render('home');
+})
 
 
 //seeding database:kitni br chlaunga
@@ -80,6 +86,8 @@ app.use(productRoutes);//so that harr incoming request ke liye path check kia ja
 app.use(reviewRoutes);
 app.use(authRoutes);
 app.use(cartRoutes);
+app.use(productApi);
+app.use(orderRoutes);
 
 
 
