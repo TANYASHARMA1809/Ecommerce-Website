@@ -1,44 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+<!-- har page pr layout function ke andar bolierplate.ejs file ka path pass krenge(but - nhi likhte) -->
+<!-- layout function ke neeche jo bhi likhenge wo body m pass ho jayega -->
+<% layout('layouts/boilerplate') %>
 
-    <% layout('layouts/boilerplate') %>
-    <%- include('../partials/navbar')%>
 
-    
-    <%- include('../partials/flash')%>
+<section class="container" >
 
-    <div class="row">
-    
-   <% for(let item of products){ %>
-    <div class="col-lg-4 mt-3">
-
-    <div class="card shadow mx-auto" style="width: 18rem;">
-        <!-- <img src="<%=item.img%>" class="card-img-top" alt="..."> -->
-        <img src="<%=item.image.secure_url%>" class="card-img-top" alt="item image">
-        <div class="card-body">
-          <h2 class="card-title"><%=item.name%></h2>
-          <h5 class="card-title"><%=item.price%></h5>
-          <p class="card-text"><%=item.desc%></p>
-          <a href="/products/<%=item._id%>" class="btn btn-primary">View Product</a>
-          <% if(currentUser && currentUser.role ==='seller'){ %>
-           <form class="d-inline-block" action="/products/<%=item._id%>?_method=DELETE" method="POST">
-            <button class="btn btn-sm btn-danger">Delete</button>
-          </form>
-          <%}%>
-        </div>
+  <%- include('../partials/flash') %>
+  <section id="heading">
+    <h4 class="display-4"><i class="fab fa-shopify" style="margin-right: 20px;"></i>Shopping-Cart</h4>
+  </section>
+  <div class="row products">
+    <%for(let product of products){%>
+      <div class="col-lg-3 col-md-6 mb-3">
+          <div class="card shadow-lg mx-auto position-relative" style="width: 20rem;">
+              <img src="<%=product.image.secure_url%>" class="card-img-top" alt="item image">
+              <span class="badge rounded-pill bg-light text-dark w-25 position-absolute translate-middle-y" style="top:41%;left:5%"><%=product.avgRating%>  &star; | <%=product.reviews.length%></span>
+              <div class="card-body">
+                <h5 class="card-title d-flex justify-content-between align-items-center">
+                  <span><%= product.name %></span> 
+                  <span class="btn like-btn" product-id="<%=product._id%>">
+                    <% if(currentUser && currentUser.wishList.includes(product._id)){ %>
+                      <i class="fas fa-heart " ></i>
+                      <% } else{ %>
+                        <i class="far fa-heart"></i>
+                    <% } %>
+                  </span>
+                </h5>
+                <p class="card-text fw-light"><%= product.desc%></p>
+                <% if(product.reviews.length){ %>
+                  <p class="text-muted"><%=product.reviews.length%> reviews</p>
+                <%}else{%>
+                  <p class="text-muted">No reviews</p>
+                <% } %> 
+                <h6 class="card-title"><span class="fw-lighter fs-6 text-decoration-line-through">Rs.<%= product.price*2 %></span> Rs.<%= product.price %> <span class="fw-light fs-6 text-warning">( 50 % OFF )</span> </h6>
+                <a href="/products/<%=product._id%>" class="btn btn-sm show-btn">View Now</a>
+              </div>
+          </div>
       </div>
-    </div>
-        
-   <% } %>
+  <%}%>
 
 </div>
-
+</section>
 
 <script src="/js/common.js"></script>
+
+
+<!-- <%=  %>  iss tag ka use krte hai evaluate krne ke liye -->
